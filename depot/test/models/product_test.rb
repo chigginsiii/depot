@@ -1,7 +1,8 @@
 require 'test_helper'
 
 class ProductTest < ActiveSupport::TestCase
-  
+  fixtures :products
+
   test "product attributes must not be empty" do
     product = Product.new
     assert product.invalid?
@@ -47,6 +48,20 @@ class ProductTest < ActiveSupport::TestCase
     bad.each do |name|
       assert new_product(name).invalid?, "#{name} should be invalid"\
     end
+  end
+
+  test "product is not valud without a unique title" do
+    # this should already be loaded in test db from test/fixtures/products.yml
+    product = Product.new(
+      title: products(:ruby).title,
+      description: 'yyy',
+      price: 1,
+      image_url: "fred.gif"
+    )
+
+    assert product.invalid?
+    # preview of i18n goodness
+    assert_equal [I18n.translate('errors.messages.taken')], product.errors[:title]
   end
 
 end
