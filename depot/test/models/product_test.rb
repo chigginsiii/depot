@@ -50,7 +50,7 @@ class ProductTest < ActiveSupport::TestCase
     end
   end
 
-  test "product is not valud without a unique title" do
+  test "product is not valid without a unique title" do
     # this should already be loaded in test db from test/fixtures/products.yml
     product = Product.new(
       title: products(:ruby).title,
